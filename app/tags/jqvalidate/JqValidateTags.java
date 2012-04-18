@@ -186,6 +186,7 @@ public class JqValidateTags extends FastTags {
 		Map<String, Object> field = new HashMap<String, Object>();
 		String _arg = args.get("arg").toString();
 		field.put("name", _arg);
+		field.put("label", _arg.replaceAll("\\[\\d*\\]", ""));
 		field.put("id", StringUtils.replaceEach(_arg, new String[] { ".", "[",
 				"]" }, new String[] { "_", "_", "" }));
 		field.put("flash", Flash.current().get(_arg));
@@ -260,5 +261,4 @@ public class JqValidateTags extends FastTags {
 		body.setProperty("field", field);
 		body.call();
 	}
-
 }
