@@ -51,6 +51,10 @@ public class JqValidateTags extends FastTags {
 		if (args.containsKey("method")) {
 			actionDef.method = args.get("method").toString();
 		}
+		String classes = "play-jqvalid-form";
+		if (args.containsKey("class")) {
+			classes += " " + args.get("class").toString();
+		}
 		if (!("GET".equals(actionDef.method) || "POST".equals(actionDef.method))) {
 			String separator = actionDef.url.indexOf('?') != -1 ? "&" : "?";
 			actionDef.url += separator + "x-http-method-override="
@@ -59,7 +63,9 @@ public class JqValidateTags extends FastTags {
 		}
 		String id = args.containsKey("id") ? (String) args.get("id")
 				: "play-jqvalid-form__" + UUID.randomUUID();
-		out.println("<form id=\""
+		out.println("<form class=\""
+				+ classes
+				+ "\" id=\""
 				+ id
 				+ "\" action=\""
 				+ actionDef.url
@@ -70,6 +76,7 @@ public class JqValidateTags extends FastTags {
 				+ "\" "
 				+ serialize(args, "action", "method", "accept-charset",
 						"enctype") + ">");
+
 		if (!("GET".equals(actionDef.method))) {
 			_authenticityToken(args, body, out, template, fromLine);
 		}
