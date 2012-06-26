@@ -1,0 +1,5 @@
+.classpath
+.project
+.settings/org.eclipse.core.resources.prefs
+.settings/org.eclipse.jdt.core.prefs
+dist/play-jqvalidate-0.3-jta.zip
