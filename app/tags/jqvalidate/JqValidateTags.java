@@ -16,6 +16,7 @@ import java.util.UUID;
 import org.apache.commons.lang.StringUtils;
 
 import play.data.validation.Email;
+import play.data.validation.Equals;
 import play.data.validation.Max;
 import play.data.validation.MaxSize;
 import play.data.validation.Min;
@@ -84,8 +85,8 @@ public class JqValidateTags extends FastTags {
 		out.println("</form>");
 	}
 
-	private static String buildValidationDataString(final Field f)
-			throws Exception {
+	private static String buildValidationDataString(String objName,
+			final Field f) throws Exception {
 		StringBuilder result = new StringBuilder("{");
 		List<String> rules = new ArrayList<String>();
 		Map<String, String> messages = new HashMap<String, String>();
@@ -153,6 +154,15 @@ public class JqValidateTags extends FastTags {
 				messages.put("email", Messages.get(email.message()));
 			}
 		}
+		Equals equals = f.getAnnotation(Equals.class);
+		if (equals != null) {
+			String ruleKey = "equalTo:'#" + objName + "_" + equals.value()
+					+ "'";
+			rules.add(ruleKey);
+			if (equals.message() != null) {
+				messages.put("equalTo", Messages.get(equals.message()));
+			}
+		}
 		if (rules.size() > 0) {
 			boolean first = true;
 			for (String rule : rules) {
@@ -217,7 +227,7 @@ public class JqValidateTags extends FastTags {
 						Field f = obj.getClass().getField(fieldName);
 						if (i == (pieces.length - 1)) {
 							field.put("validationData",
-									buildValidationDataString(f));
+									buildValidationDataString(pieces[0], f));
 
 							try {
 								Method getter = obj.getClass().getMethod(
